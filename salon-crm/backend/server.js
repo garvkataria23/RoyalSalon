@@ -21,12 +21,14 @@ const appointmentRoutes = require('./routes/appointments');
 const staffRoutes = require('./routes/staff');
 const clientRoutes = require('./routes/clients');
 const serviceRoutes = require('./routes/services');
+const smsRoutes = require('./routes/sms');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/staff', staffRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/api/sms', smsRoutes);
 
 app.get('/', (req, res) => {
     res.send('Salon CRM API is running...');

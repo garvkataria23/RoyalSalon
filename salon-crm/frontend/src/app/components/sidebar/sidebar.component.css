@@ -117,6 +117,7 @@ nav ul li:nth-child(6) { animation-delay: 0.17s; }
 nav ul li:nth-child(7) { animation-delay: 0.20s; }
 nav ul li:nth-child(8) { animation-delay: 0.23s; }
 nav ul li:nth-child(9) { animation-delay: 0.26s; }
+nav ul li:nth-child(10) { animation-delay: 0.29s; }
 
 .sidebar-footer {
     margin-top: auto;

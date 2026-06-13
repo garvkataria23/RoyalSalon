@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AppointmentService } from '../../services/appointment.service';
 import { StaffService } from '../../services/staff.service';
+import { ClientService } from '../../services/client.service';
 import { SalonService } from '../../services/salon-service.service';
 import { ToastService } from '../../services/toast.service';
 import { ConfirmService } from '../../services/confirm.service';
@@ -35,6 +36,9 @@ export class AppointmentFormComponent implements OnInit {
   id: string | null = null;
   services: any[] = [];
   staffList: any[] = [];
+  clients: any[] = [];
+  showClientSuggestions = false;
+  filteredClients: any[] = [];
   statuses: string[] = ['Booked', 'Completed', 'Cancelled'];
   isStatusChanging: boolean = false;
 
@@ -73,6 +77,7 @@ export class AppointmentFormComponent implements OnInit {
     private router: Router,
     private appointmentService: AppointmentService,
     private staffService: StaffService,
+    private clientService: ClientService,
     private salonService: SalonService,
     private toastService: ToastService,
     private confirmService: ConfirmService
@@ -81,10 +86,12 @@ export class AppointmentFormComponent implements OnInit {
   ngOnInit(): void {
     forkJoin({
       services: this.salonService.getServices(),
-      staff: this.staffService.getStaff()
-    }).subscribe(({ services, staff }) => {
+      staff: this.staffService.getStaff(),
+      clients: this.clientService.getClients()
+    }).subscribe(({ services, staff, clients }) => {
       this.services = services;
       this.staffList = staff;
+      this.clients = clients;
     });
 
     this.id = this.route.snapshot.paramMap.get('id');
@@ -121,6 +128,29 @@ export class AppointmentFormComponent implements OnInit {
     if (selected) {
       this.appointment.price = selected.price;
     }
+  }
+
+  filterClients() {
+    const q = this.appointment.clientName?.toLowerCase().trim() || '';
+    if (!q) {
+      this.filteredClients = [];
+      this.showClientSuggestions = false;
+      return;
+    }
+    this.filteredClients = this.clients.filter(c =>
+      c.name?.toLowerCase().includes(q)
+    ).slice(0, 8);
+    this.showClientSuggestions = this.filteredClients.length > 0;
+  }
+
+  selectClient(c: any) {
+    this.appointment.clientName = c.name;
+    this.appointment.clientPhone = c.phone;
+    this.showClientSuggestions = false;
+  }
+
+  onClientBlur() {
+    setTimeout(() => this.showClientSuggestions = false, 200);
   }
 
   save() {

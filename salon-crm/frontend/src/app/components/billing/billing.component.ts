@@ -41,6 +41,29 @@ export class BillingComponent implements OnInit {
     }
   }
 
+  get invoiceNumber(): string {
+    if (!this.appointment) return '';
+    const storedKey = `invoice_${this.appointment._id}`;
+    const stored = localStorage.getItem(storedKey);
+    if (stored) return stored;
+
+    if (this.isPaid) {
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth() + 1).padStart(2, '0');
+      const d = String(today.getDate()).padStart(2, '0');
+      const dateStr = `${y}${m}${d}`;
+      const counterKey = `invoice_counter_${dateStr}`;
+      let counter = parseInt(localStorage.getItem(counterKey) || '0', 10);
+      counter++;
+      localStorage.setItem(counterKey, String(counter));
+      const num = `INV-${dateStr}-${String(counter).padStart(3, '0')}`;
+      localStorage.setItem(storedKey, num);
+      return num;
+    }
+    return 'INV-PENDING';
+  }
+
   get isPaid(): boolean {
     return this.appointment?.status === 'Completed';
   }

@@ -12,6 +12,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ServiceMenuComponent } from './components/service-menu/service-menu.component';
 import { DiscountsComponent } from './components/discounts/discounts.component';
 import { HistoryComponent } from './components/history/history.component';
+import { AppointmentsListComponent } from './components/appointments-list/appointments-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -27,6 +28,7 @@ export const routes: Routes = [
       { path: 'services', component: ServiceMenuComponent },
       { path: 'discounts', component: DiscountsComponent },
       { path: 'history', component: HistoryComponent },
+      { path: 'appointments', component: AppointmentsListComponent },
       { path: 'book', component: AppointmentFormComponent },
       { path: 'edit/:id', component: AppointmentFormComponent },
       { path: 'billing', component: BillingListComponent },

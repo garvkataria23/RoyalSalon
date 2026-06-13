@@ -16,7 +16,8 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
       tap((res: any) => this.handleAuth(res)),
       catchError((err: HttpErrorResponse) => {
-        const storedPwd = localStorage.getItem('adminPassword') || 'aurashineinfotech';
+        const raw = localStorage.getItem('adminPassword');
+        const storedPwd = raw ? (() => { try { return atob(raw); } catch { return raw; } })() : 'aurashineinfotech';
         if (credentials.userId === 'admin' && credentials.password === storedPwd) {
           const mockRes = {
             token: 'mock-token-' + Date.now(),

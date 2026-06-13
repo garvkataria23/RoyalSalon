@@ -41,11 +41,13 @@ export class SettingsComponent implements OnInit {
   }
 
   private get storedPassword(): string {
-    return localStorage.getItem('adminPassword') || 'aurashineinfotech';
+    const raw = localStorage.getItem('adminPassword');
+    if (!raw) return 'aurashineinfotech';
+    try { return atob(raw); } catch { return raw; }
   }
 
   private set storedPassword(pwd: string) {
-    localStorage.setItem('adminPassword', pwd);
+    localStorage.setItem('adminPassword', btoa(pwd));
   }
 
   changePassword() {

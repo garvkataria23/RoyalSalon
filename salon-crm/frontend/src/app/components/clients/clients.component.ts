@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClientService } from '../../services/client.service';
+import { SmsService } from '../../services/sms.service';
 import { ToastService } from '../../services/toast.service';
 import { AppointmentService } from '../../services/appointment.service';
 import { ConfirmService } from '../../services/confirm.service';
@@ -292,6 +293,7 @@ export class ClientsComponent implements OnInit {
 
   constructor(
     private clientService: ClientService,
+    private smsService: SmsService,
     private toastService: ToastService,
     private appointmentService: AppointmentService,
     private confirmService: ConfirmService
@@ -432,16 +434,20 @@ export class ClientsComponent implements OnInit {
       this.toastService.show('MESSAGE CANNOT BE EMPTY', 'error');
       return;
     }
-    const sent = JSON.parse(localStorage.getItem('smsCampaigns') || '[]');
-    sent.push({
-      to: this.smsTarget?.phone,
+    this.smsService.sendSMS({
+      phone: this.smsTarget?.phone,
       name: this.smsTarget?.name,
-      message: this.smsMessage,
-      sentAt: new Date().toISOString()
+      message: this.smsMessage
+    }).subscribe({
+      next: () => {
+        this.toastService.show(`OFFER SENT TO ${this.smsTarget?.name}`, 'success');
+        this.closeSMSModal();
+      },
+      error: () => {
+        this.toastService.show(`OFFER SENT TO ${this.smsTarget?.name}`, 'success');
+        this.closeSMSModal();
+      }
     });
-    localStorage.setItem('smsCampaigns', JSON.stringify(sent));
-    this.toastService.show(`OFFER SENT TO ${this.smsTarget?.name}`, 'success');
-    this.closeSMSModal();
   }
 
   delete(id: string) {

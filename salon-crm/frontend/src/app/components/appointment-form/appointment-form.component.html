@@ -21,9 +21,15 @@
         </div>
         <form (ngSubmit)="save()">
             <div class="grid-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;">
-                <div class="form-group">
+                <div class="form-group client-autocomplete">
                     <label>CLIENT NAME</label>
-                    <input type="text" [(ngModel)]="appointment.clientName" name="clientName" required>
+                    <input type="text" [(ngModel)]="appointment.clientName" name="clientName" required (input)="filterClients()" (focus)="filterClients()" (blur)="onClientBlur()" autocomplete="off">
+                    <div class="autocomplete-dropdown" *ngIf="showClientSuggestions && filteredClients.length">
+                        <button type="button" class="autocomplete-item" *ngFor="let c of filteredClients" (mousedown)="selectClient(c)">
+                            <span class="ac-name">{{c.name}}</span>
+                            <span class="ac-phone">{{c.phone}}</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>CONTACT NUMBER</label>
@@ -99,10 +105,11 @@
                     </button>
                     <button type="button" class="btn btn-primary action-btn"
                         [class.btn-secondary]="!canGenerateBill"
+                        [disabled]="!canGenerateBill"
                         (click)="generateBill()"
                         [title]="canGenerateBill ? 'Generate Invoice' : 'Complete appointment first'">
                         <span class="material-symbols-outlined">receipt_long</span>
-                        {{canGenerateBill ? 'INVOICE' : 'INVOICE'}}
+                        {{canGenerateBill ? 'GENERATE INVOICE' : 'INVOICE LOCKED'}}
                     </button>
                     <button type="button" class="btn btn-secondary action-btn" (click)="openShareModal()">
                         <span class="material-symbols-outlined">share</span>
