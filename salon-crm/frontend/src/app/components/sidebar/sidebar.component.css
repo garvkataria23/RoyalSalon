@@ -191,10 +191,6 @@ nav ul li:nth-child(10) { animation-delay: 0.29s; }
         width: 280px;
     }
 
-    .home-layout.sidebar-open .sidebar {
-        transform: translateX(0);
-    }
-
     nav a {
         padding: 1rem 1.5rem;
         font-size: 0.75rem;

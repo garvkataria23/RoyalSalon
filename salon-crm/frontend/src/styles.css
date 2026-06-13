@@ -454,6 +454,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
+    .home-layout.sidebar-open .sidebar {
+        transform: translateX(0);
+    }
     .page-container {
         padding: 1.5rem;
     }
