@@ -8,7 +8,7 @@ import { DemoDataService } from './demo-data.service';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/auth';
+  private apiUrl = 'https://royalsalon.onrender.com/api/auth';
 
   constructor(private http: HttpClient, private demo: DemoDataService) { }
 

@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AppointmentService {
-  private apiUrl = 'http://localhost:5000/api/appointments';
+  private apiUrl = 'https://royalsalon.onrender.com/api/appointments';
 
   constructor(private http: HttpClient) { }
 

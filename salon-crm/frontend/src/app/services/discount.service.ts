@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DiscountService {
-  private apiUrl = 'http://localhost:5000/api/discounts';
+  private apiUrl = 'https://royalsalon.onrender.com/api/discounts';
 
   constructor(private http: HttpClient) { }
 

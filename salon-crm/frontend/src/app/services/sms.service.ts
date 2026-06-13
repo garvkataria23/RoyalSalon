@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class SmsService {
-  private apiUrl = 'http://localhost:5000/api/sms';
+  private apiUrl = 'https://royalsalon.onrender.com/api/sms';
 
   constructor(private http: HttpClient) { }
 
