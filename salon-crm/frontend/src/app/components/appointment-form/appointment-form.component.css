@@ -439,6 +439,26 @@
         width: 100%;
         min-width: unset;
     }
+    .status-badges {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .status-badge {
+        justify-content: center;
+    }
+    .time-picker-dropdown .time-slots-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .time-slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .reschedule-modal {
+        padding: 1.5rem;
+        width: 95%;
+    }
+    .share-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .share-option-btn.pdf:hover {

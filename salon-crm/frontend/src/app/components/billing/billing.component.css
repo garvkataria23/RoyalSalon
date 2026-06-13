@@ -315,6 +315,46 @@
     color: #25D366;
 }
 
+@media (max-width: 768px) {
+    .billing-container {
+        padding: 0.5rem;
+    }
+    .luxury-bill-card {
+        padding: 2rem 1.25rem;
+    }
+    .bill-header-luxury h1 {
+        font-size: 1.6rem;
+    }
+    .bill-meta {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .bill-summary-luxury {
+        max-width: 100%;
+    }
+    .total-line-luxury {
+        font-size: 1rem;
+    }
+    .total-val {
+        font-size: 1.2rem;
+    }
+    .share-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .bill-actions {
+        flex-direction: column;
+    }
+    .bill-actions .btn {
+        width: 100%;
+    }
+    .discount-row {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.5rem;
+    }
+}
+
 @media print {
     .no-print { display: none !important; }
     .print-only { display: flex !important; }

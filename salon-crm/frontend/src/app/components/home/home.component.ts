@@ -27,6 +27,7 @@ interface SearchResult {
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
+  sidebarOpen = false;
   searchQuery: string = '';
   showSuggestions: boolean = false;
   searchResults: SearchResult[] = [];
@@ -159,6 +160,14 @@ export class HomeComponent implements OnInit {
 
   toggleProfileMenu() {
     this.showProfileMenu = !this.showProfileMenu;
+  }
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  closeSidebar() {
+    this.sidebarOpen = false;
   }
 
   logout() {

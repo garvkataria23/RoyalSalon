@@ -1,7 +1,11 @@
-<div class="home-layout">
+<div class="home-layout" [class.sidebar-open]="sidebarOpen">
+    <div class="sidebar-overlay" (click)="closeSidebar()"></div>
     <app-sidebar></app-sidebar>
     <div class="main-wrapper">
         <header class="luxury-header">
+            <button class="hamburger-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
             <div class="search-bar-wrapper">
                 <div class="search-bar">
                     <span class="material-symbols-outlined">search</span>
