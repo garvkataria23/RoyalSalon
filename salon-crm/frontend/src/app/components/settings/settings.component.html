@@ -1,0 +1,78 @@
+<div class="page-container fade-in" style="max-width: 700px;">
+  <div class="page-header">
+    <h2>System Configuration</h2>
+  </div>
+  
+  <form (ngSubmit)="save()">
+    <div class="form-group" style="margin-bottom: 2.5rem;">
+      <label>ESTABLISHMENT NAME</label>
+      <input type="text" [(ngModel)]="salonName" name="salonName" placeholder="Enter establishment name">
+    </div>
+    
+    <div class="grid-form">
+        <div class="form-group">
+          <label>CURRENCY PREFERENCE</label>
+          <select [(ngModel)]="currency" name="currency">
+            <option value="INR">INR (₹)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>TAX LEVY (%)</label>
+          <div style="position: relative;">
+              <input type="number" [(ngModel)]="taxRate" name="taxRate" min="0" max="100">
+              <span style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: var(--gold); font-weight: 700;">%</span>
+          </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 4rem;">
+        <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem;">
+            APPLY CONFIGURATION
+        </button>
+    </div>
+  </form>
+
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);">
+
+  <h3 style="font-size: 1.4rem; margin-bottom: 2rem;">Change Password</h3>
+  <form (ngSubmit)="changePassword()">
+    <div class="grid-form">
+      <div class="form-group">
+        <label>CURRENT PASSWORD</label>
+        <div style="position: relative;">
+          <input [type]="showOld ? 'text' : 'password'" [(ngModel)]="oldPassword" name="oldPassword" required placeholder="Enter current password">
+          <button type="button" (click)="showOld = !showOld" style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--gold); padding: 0.25rem;">
+            <span class="material-symbols-outlined" style="font-size: 1.1rem;">{{showOld ? 'visibility_off' : 'visibility'}}</span>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>NEW PASSWORD</label>
+        <div style="position: relative;">
+          <input [type]="showNew ? 'text' : 'password'" [(ngModel)]="newPassword" name="newPassword" required placeholder="Enter new password" minlength="6">
+          <button type="button" (click)="showNew = !showNew" style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--gold); padding: 0.25rem;">
+            <span class="material-symbols-outlined" style="font-size: 1.1rem;">{{showNew ? 'visibility_off' : 'visibility'}}</span>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>CONFIRM NEW PASSWORD</label>
+        <div style="position: relative;">
+          <input [type]="showConfirm ? 'text' : 'password'" [(ngModel)]="confirmPassword" name="confirmPassword" required placeholder="Confirm new password">
+          <button type="button" (click)="showConfirm = !showConfirm" style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--gold); padding: 0.25rem;">
+            <span class="material-symbols-outlined" style="font-size: 1.1rem;">{{showConfirm ? 'visibility_off' : 'visibility'}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 2rem;">
+      <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem;">
+        <span class="material-symbols-outlined">lock_reset</span>
+        UPDATE PASSWORD
+      </button>
+    </div>
+  </form>
+</div>

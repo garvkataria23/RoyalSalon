@@ -1,0 +1,51 @@
+<div class="home-layout">
+    <app-sidebar></app-sidebar>
+    <div class="main-wrapper">
+        <header class="luxury-header">
+            <div class="search-bar-wrapper">
+                <div class="search-bar">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" [(ngModel)]="searchQuery" name="search" placeholder="SEARCH CLIENTS, SPECIALISTS OR INVOICES..." (input)="onSearchInput()" (focus)="searchQuery.trim().length >= 2 && searchResults.length ? showSuggestions = true : null" autocomplete="off">
+                </div>
+                <div class="search-dropdown" *ngIf="showSuggestions && searchResults.length">
+                    <div class="search-results">
+                        <a class="search-result-item" *ngFor="let r of searchResults" (click)="selectResult(r)">
+                            <span class="result-icon" [class]="'result-icon-' + r.type">
+                                <span class="material-symbols-outlined">{{r.icon}}</span>
+                            </span>
+                            <div class="result-text">
+                                <span class="result-label">{{r.label}}</span>
+                                <span class="result-subtitle">{{r.subtitle}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="user-profile" (click)="toggleProfileMenu()">
+                    <div class="user-info">
+                        <span class="user-name">{{userName}}</span>
+                        <span class="user-role">{{userRole}}</span>
+                    </div>
+                    <div class="user-avatar">{{userName.charAt(0)}}</div>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="profile-dropdown" *ngIf="showProfileMenu">
+                        <a (click)="router.navigate(['/home/settings'])">
+                            <span class="material-symbols-outlined">settings</span>
+                            SETTINGS
+                        </a>
+                        <hr>
+                        <a (click)="logout()" class="logout-link">
+                            <span class="material-symbols-outlined">logout</span>
+                            LOGOUT
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

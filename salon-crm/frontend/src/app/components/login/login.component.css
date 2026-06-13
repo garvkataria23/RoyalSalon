@@ -1,0 +1,183 @@
+.luxury-login {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=2000') center/cover;
+    position: relative;
+}
+
+.login-card {
+    background: var(--white);
+    padding: 3rem;
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    position: relative;
+    border: 1px solid var(--gold);
+    animation: scaleIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.login-card::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px solid var(--gold-light);
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.3s both;
+}
+
+.gold-icon {
+    font-size: 3.5rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    animation: fadeInDown 0.5s ease-out 0.1s both;
+}
+
+h2 {
+    margin-bottom: 0.5rem;
+    font-size: 2.2rem;
+    animation: fadeInDown 0.5s ease-out 0.15s both;
+}
+
+.subtitle {
+    color: var(--gold);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 2.5rem;
+    animation: fadeInDown 0.5s ease-out 0.2s both;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+    animation: fadeInUp 0.5s ease-out both;
+}
+
+.form-group:nth-of-type(1) { animation-delay: 0.25s; }
+.form-group:nth-of-type(2) { animation-delay: 0.3s; }
+
+input {
+    text-align: center;
+    background: transparent;
+    border-bottom: 1px solid var(--border) !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0;
+    padding: 1rem 0;
+    color: var(--charcoal);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    transition: border-color 0.4s ease, padding 0.4s ease;
+}
+
+input:focus {
+    padding: 1.2rem 0 0.8rem;
+}
+
+.login-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    animation: fadeInUp 0.5s ease-out 0.35s both;
+}
+
+.error {
+    color: var(--danger);
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    background: #fef2f2;
+    padding: 0.75rem;
+    border-radius: 4px;
+    animation: fadeInDown 0.3s ease-out both;
+}
+
+.field-error {
+    color: var(--danger);
+    font-size: 0.7rem;
+    display: block;
+    margin-top: 0.3rem;
+    text-align: center;
+    animation: fadeInDown 0.3s ease-out both;
+}
+
+.demo-hint {
+    margin-top: 2rem;
+    font-size: 0.7rem;
+    color: #bbb;
+    letter-spacing: 0.1em;
+    animation: fadeInUp 0.5s ease-out 0.4s both;
+}
+
+.password-group {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0;
+    bottom: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.password-toggle:hover {
+    color: var(--gold-hover);
+    transform: scale(1.1);
+}
+
+.password-toggle .material-symbols-outlined {
+    font-size: 1.2rem;
+}
+
+.remember-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    animation: fadeInUp 0.5s ease-out 0.38s both;
+}
+
+.remember-checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--gold);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.remember-checkbox:hover {
+    transform: scale(1.15);
+}
+
+.remember-text {
+    font-size: 0.75rem;
+    color: var(--charcoal-light);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.remember-label:hover .remember-text {
+    color: var(--gold);
+}
+
+.login-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

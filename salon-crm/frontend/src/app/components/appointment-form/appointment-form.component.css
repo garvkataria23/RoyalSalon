@@ -1,0 +1,406 @@
+.status-selector {
+    margin-bottom: 2.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--gold-light);
+    padding-bottom: 2rem;
+}
+
+.status-selector label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: var(--gold-hover);
+    margin-bottom: 1rem;
+}
+
+.status-badges {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.status-badge .material-symbols-outlined {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.status-badge:hover .material-symbols-outlined {
+    transform: scale(1.15);
+}
+
+.status-badge.booked {
+    background: transparent;
+    color: var(--gold-hover);
+    border: 1px solid var(--gold-light);
+}
+
+.status-badge.booked.active {
+    background: var(--charcoal);
+    color: var(--gold);
+    border-color: var(--gold);
+    box-shadow: var(--shadow-gold);
+    animation: pulse 1.5s ease-in-out 2;
+}
+
+.status-badge.completed {
+    background: transparent;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.status-badge.completed.active {
+    background: #16a34a;
+    color: white;
+    border-color: #16a34a;
+    box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+}
+
+.status-badge.cancelled {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid #fecaca;
+}
+
+.status-badge.cancelled.active {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+    box-shadow: 0 4px 15px rgba(153, 27, 27, 0.3);
+}
+
+.status-badge:hover:not(:disabled) {
+    transform: translateY(-3px);
+}
+
+.status-badge:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.status-badge:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.resched-overlay {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.reschedule-modal {
+    background: white;
+    padding: 2.5rem;
+    max-width: 480px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: scaleIn 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.modal-close-btn:hover {
+    color: var(--charcoal);
+}
+
+.reschedule-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.time-slot-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.time-slot-btn.available {
+    background: var(--white);
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+}
+
+.time-slot-btn.available:hover:not(:disabled) {
+    border-color: #3b82f6;
+    color: #3b82f6;
+    background: #eff6ff;
+    transform: translateY(-2px);
+}
+
+.time-slot-btn.unavailable {
+    background: #e5e7eb;
+    color: #9ca3af;
+    border: 1px solid #d1d5db;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.time-slot-btn.selected {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+    transform: scale(1.03);
+}
+
+.time-slot-btn:active {
+    transform: scale(0.96);
+}
+
+.slot-indicator {
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: #dc2626;
+}
+
+.time-slot-btn:disabled {
+    opacity: 0.7;
+}
+
+.share-modal {
+    max-width: 500px;
+}
+
+.share-preview {
+    background: var(--bg-base);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+}
+
+.share-preview pre {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    color: var(--charcoal);
+}
+
+.share-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.share-option-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.25rem 0.75rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.share-option-btn .material-symbols-outlined {
+    font-size: 1.8rem;
+    color: var(--charcoal);
+    transition: transform 0.4s ease, color 0.4s ease;
+}
+
+.share-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+
+.share-option-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-light);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.share-option-btn:hover .material-symbols-outlined {
+    transform: scale(1.15);
+}
+
+.time-picker-group {
+    position: relative;
+}
+
+.time-picker-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--charcoal);
+    background: var(--white);
+}
+
+.time-picker-trigger:hover,
+.time-picker-trigger.active {
+    border-bottom-color: var(--gold);
+}
+
+.time-picker-trigger .placeholder {
+    color: #bbb;
+    font-weight: 400;
+    font-family: var(--font-body);
+}
+
+.time-picker-trigger .material-symbols-outlined {
+    color: var(--gold);
+    font-size: 1.3rem;
+}
+
+.time-picker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+}
+
+.time-picker-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: none;
+    box-shadow: var(--shadow-soft);
+    z-index: 11;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease;
+}
+
+.time-picker-dropdown .time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-top: 0;
+}
+
+.time-picker-dropdown .time-slot-btn {
+    padding: 0.6rem 0.25rem;
+    font-size: 0.7rem;
+    background: var(--white);
+    color: var(--charcoal);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.time-picker-dropdown .time-slot-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-light);
+    color: var(--gold-hover);
+}
+
+.time-picker-dropdown .time-slot-btn.selected {
+    background: var(--charcoal);
+    color: var(--gold);
+    border-color: var(--gold);
+    font-weight: 700;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.actions-divider {
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.actions-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem 0;
+}
+
+.action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.action-btn {
+    flex: 1;
+    min-width: 150px;
+}
+
+.row-secondary .action-btn {
+    min-width: 120px;
+}
+
+@media (max-width: 768px) {
+    .action-btn {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+.share-option-btn.pdf:hover {
+    border-color: var(--gold);
+    background: var(--gold-light);
+}
+
+.share-option-btn.pdf:hover .material-symbols-outlined {
+    color: var(--gold);
+}
+
+.share-option-btn.download:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.share-option-btn.download:hover .material-symbols-outlined {
+    color: #2563eb;
+}

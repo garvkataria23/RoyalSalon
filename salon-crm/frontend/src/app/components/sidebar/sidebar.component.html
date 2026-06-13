@@ -1,0 +1,70 @@
+<aside class="sidebar">
+    <div class="logo">
+        <span class="material-symbols-outlined logo-icon">spa</span>
+        <span class="logo-text">Royal Salon</span>
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a routerLink="/home" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    Insights
+                </a>
+            </li>
+            <li>
+                <a routerLink="/home/calendar" routerLinkActive="active">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    Calendar
+                </a>
+            </li>
+            <li>
+                <a routerLink="/home/services" routerLinkActive="active">
+                    <span class="material-symbols-outlined">flatware</span>
+                    Portfolio
+                </a>
+            </li>
+            <li>
+                <a routerLink="/home/staff" routerLinkActive="active">
+                    <span class="material-symbols-outlined">groups</span>
+                    Staff
+                </a>
+            </li>
+            <li>
+                <a routerLink="/home/clients" routerLinkActive="active">
+                    <span class="material-symbols-outlined">person</span>
+                    Clients
+                </a>
+            </li>
+            <li>
+                <a routerLink="/home/billing" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <span class="material-symbols-outlined">receipt_long</span>
+                    Billing
+                </a>
+            </li>
+            <li>
+                <a routerLink="/home/history" routerLinkActive="active">
+                    <span class="material-symbols-outlined">history</span>
+                    History
+                </a>
+            </li>
+            <li>
+                <a routerLink="/home/discounts" routerLinkActive="active">
+                    <span class="material-symbols-outlined">sell</span>
+                    Discounts
+                </a>
+            </li>
+            <li *ngIf="isAdmin">
+                <a routerLink="/home/settings" routerLinkActive="active">
+                    <span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="sidebar-footer">
+        <button class="logout-btn" (click)="logout()">
+            <span class="material-symbols-outlined">logout</span>
+            Logout
+        </button>
+    </div>
+</aside>

@@ -1,0 +1,127 @@
+<div class="page-container fade-in cal-page">
+  <!-- Top bar -->
+  <div class="cal-topbar">
+    <div class="cal-topbar-left">
+      <h2>{{weekRange}}</h2>
+      <button class="btn btn-secondary btn-sm" (click)="goToday()">TODAY</button>
+    </div>
+    <div class="cal-topbar-right">
+      <div class="stat-pill booked-pill">{{getStats('Booked')}} Booked</div>
+      <div class="stat-pill completed-pill">{{getStats('Completed')}} Done</div>
+      <div class="stat-pill cancelled-pill">{{getStats('Cancelled')}} Cancelled</div>
+    </div>
+  </div>
+
+  <!-- Week strip -->
+  <div class="week-strip">
+    <button class="nav-btn" (click)="navigateWeek(-1)">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+    <div class="week-days">
+      <div class="week-day" *ngFor="let day of weekDays"
+           [class.today]="day.isToday"
+           [class.active]="day.isSelected"
+           (click)="selectDay(day)">
+        <span class="wd-label">{{day.label}}</span>
+        <span class="wd-num" [class.today-num]="day.isToday">{{day.full.getDate()}}</span>
+      </div>
+    </div>
+    <button class="nav-btn" (click)="navigateWeek(1)">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+  </div>
+
+  <!-- Legend -->
+  <div class="cal-legend">
+    <span class="legend-item"><span class="dot free-dot"></span> Free</span>
+    <span class="legend-item"><span class="dot busy-dot"></span> Booked</span>
+    <span class="legend-item"><span class="dot done-dot"></span> Completed</span>
+    <span class="legend-item"><span class="dot cancel-dot"></span> Unavailable</span>
+  </div>
+
+  <!-- Staff filter bar -->
+  <div class="staff-filter-bar" *ngIf="staffList.length > 0">
+    <button class="filter-btn" [class.filter-active]="selectedStaffId === null" (click)="selectStaffFilter(null)">
+      <span class="filter-avatar">A</span>
+      <span class="filter-label">ALL</span>
+      <span class="filter-badge">{{staffList.length}}</span>
+    </button>
+    <div class="filter-scroll">
+      <button class="filter-btn" *ngFor="let staff of filterStaffList"
+              [class.filter-active]="selectedStaffId === staff._id"
+              (click)="selectStaffFilter(staff._id)">
+        <span class="filter-avatar">{{staff.name ? staff.name.charAt(0).toUpperCase() : '?'}}</span>
+        <span class="filter-label">{{staff.name}}</span>
+        <span class="filter-badge">{{staffApptCount(staff._id)}}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Pagination (ALL mode, many staff) -->
+  <div class="cal-pagination" *ngIf="showPagination">
+    <button class="page-btn" [class.page-disabled]="staffPage === 0" (click)="prevPage()">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+    <span class="page-info">{{staffPage + 1}} / {{maxPage + 1}}</span>
+    <button class="page-btn" [class.page-disabled]="staffPage >= maxPage" (click)="nextPage()">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+  </div>
+
+  <!-- Empty state (no staff) -->
+  <div class="empty-state" *ngIf="staffList.length === 0">
+    <span class="material-symbols-outlined empty-icon">group_off</span>
+    <h3>No staff found</h3>
+    <p>Please add staff members first to start booking appointments.</p>
+    <button class="btn btn-primary" (click)="goToStaff()">
+      <span class="material-symbols-outlined">person_add</span>
+      ADD STAFF MEMBERS
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="cal-table-wrap" *ngIf="staffList.length > 0">
+    <table class="cal-table">
+      <thead>
+        <tr>
+          <th class="col-time">TIME</th>
+          <th class="col-staff" *ngFor="let staff of visibleStaff"
+              [style.width]="selectedStaffId ? '100%' : null">
+            <div class="th-staff">
+              <div class="th-avatar">{{staff.name ? staff.name.charAt(0).toUpperCase() : '?'}}</div>
+              <div class="th-info">
+                <span class="th-name">{{staff.name}}</span>
+                <span class="th-role">{{staff.specialization}}</span>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hour of hours">
+          <td class="td-time" [class.past-hdr]="isPastHour(hour)">
+            <span class="time-label">{{formatHour(hour)}}</span>
+          </td>
+          <td class="td-data" *ngFor="let staff of visibleStaff"
+              [class.past-cell]="isPastHour(hour) && getCellAppointments(staff._id, hour).length === 0"
+              (click)="onCellClick(staff, hour)">
+            <div class="cell-appt" *ngFor="let appt of getCellAppointments(staff._id, hour)"
+                 [class.ca-booked]="appt.status === 'Booked'"
+                 [class.ca-done]="appt.status === 'Completed'"
+                 [class.ca-cancel]="appt.status === 'Cancelled'"
+                 (click)="onApptClick(appt); $event.stopPropagation()">
+              <span class="ca-time">{{formatTime(appt.timeSlot)}}</span>
+              <span class="ca-client">{{appt.clientName}}</span>
+              <span class="ca-service">{{appt.service}}</span>
+              <span class="ca-badge" *ngIf="appt.status === 'Completed'">&#10003;</span>
+              <span class="ca-badge" *ngIf="appt.status === 'Cancelled'">&#10005;</span>
+            </div>
+            <div class="cell-empty-hint" *ngIf="getCellAppointments(staff._id, hour).length === 0 && !isPastHour(hour)">
+              <span class="cell-plus">+</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

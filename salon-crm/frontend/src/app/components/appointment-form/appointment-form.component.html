@@ -1,0 +1,185 @@
+<div class="page-container fade-in" style="max-width: 900px; margin: 0 auto;">
+    <div class="page-header">
+        <h2>Appointment Reservation</h2>
+    </div>
+    
+    <div class="luxury-form-card" style="box-shadow: none; border: none;">
+        <div *ngIf="isEdit" class="status-selector">
+            <label>RESERVATION STATUS</label>
+            <div class="status-badges">
+                <button type="button" *ngFor="let s of statuses"
+                    [class]="'status-badge ' + s.toLowerCase()"
+                    [class.active]="appointment.status === s"
+                    [disabled]="isStatusChanging"
+                    (click)="updateStatus(s)">
+                    <span class="material-symbols-outlined">
+                        {{s === 'Booked' ? 'schedule' : s === 'Completed' ? 'check_circle' : 'cancel'}}
+                    </span>
+                    {{s}}
+                </button>
+            </div>
+        </div>
+        <form (ngSubmit)="save()">
+            <div class="grid-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;">
+                <div class="form-group">
+                    <label>CLIENT NAME</label>
+                    <input type="text" [(ngModel)]="appointment.clientName" name="clientName" required>
+                </div>
+                <div class="form-group">
+                    <label>CONTACT NUMBER</label>
+                    <input type="text" [(ngModel)]="appointment.clientPhone" name="clientPhone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>SERVICE CURATION</label>
+                    <select [(ngModel)]="appointment.service" name="service" (change)="onServiceChange()" required>
+                        <option value="">SELECT SERVICE</option>
+                        <option *ngFor="let s of services" [value]="s.name">{{s.name | uppercase}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>FEE (ESTIMATED)</label>
+                    <input type="text" [value]="'₹' + appointment.price" readonly style="font-family: var(--font-heading); font-weight: 700; color: var(--gold);">
+                </div>
+                <div class="form-group">
+                    <label>EXCLUSIVE DISCOUNT (₹)</label>
+                    <input type="number" [(ngModel)]="appointment.discount" name="discount" placeholder="0">
+                </div>
+
+                <div class="form-group">
+                    <label>ASSIGNED SPECIALIST</label>
+                    <select [(ngModel)]="appointment.staffId" name="staffId" (change)="onStaffChange()" required>
+                        <option value="">SELECT SPECIALIST</option>
+                        <option *ngFor="let s of staffList" [value]="s._id">{{s.name | uppercase}} - {{s.specialization}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>RESERVATION DATE</label>
+                    <input type="date" [(ngModel)]="appointment.date" name="date" [min]="minDate" required>
+                </div>
+
+                <div class="form-group time-picker-group">
+                    <label>TIME SLOT</label>
+                    <div class="time-picker-trigger" (click)="showTimePicker = !showTimePicker" [class.active]="showTimePicker">
+                        <span [class.placeholder]="!appointment.timeSlot">{{appointment.timeSlot || 'SELECT TIME'}}</span>
+                        <span class="material-symbols-outlined">schedule</span>
+                    </div>
+                    <div class="time-picker-overlay" *ngIf="showTimePicker" (click)="closeTimePicker()"></div>
+                    <div class="time-picker-dropdown" *ngIf="showTimePicker">
+                        <div class="time-slots-grid">
+                            <button type="button" *ngFor="let slot of allTimeSlots"
+                                class="time-slot-btn"
+                                [class.selected]="appointment.timeSlot === slot"
+                                (click)="selectSlot(slot)">
+                                {{slot}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>ADDITIONAL PREFERENCES</label>
+                    <textarea [(ngModel)]="appointment.notes" name="notes" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="actions-divider"></div>
+            <div class="actions-footer">
+                <div class="action-row row-primary">
+                    <button type="submit" class="btn btn-primary action-btn" [disabled]="isSaving">
+                        {{isSaving ? 'SAVING...' : (isEdit ? 'UPDATE RESERVATION' : 'BOOK ATELIER')}}
+                    </button>
+                    <button type="button" class="btn btn-secondary action-btn" (click)="goBack()">
+                        DISCARD
+                    </button>
+                </div>
+                <div class="action-row row-secondary" *ngIf="isEdit">
+                    <button type="button" class="btn btn-secondary action-btn" (click)="openRescheduleModal()">
+                        <span class="material-symbols-outlined">event_repeat</span>
+                        RESCHEDULE
+                    </button>
+                    <button type="button" class="btn btn-primary action-btn"
+                        [class.btn-secondary]="!canGenerateBill"
+                        (click)="generateBill()"
+                        [title]="canGenerateBill ? 'Generate Invoice' : 'Complete appointment first'">
+                        <span class="material-symbols-outlined">receipt_long</span>
+                        {{canGenerateBill ? 'INVOICE' : 'INVOICE'}}
+                    </button>
+                    <button type="button" class="btn btn-secondary action-btn" (click)="openShareModal()">
+                        <span class="material-symbols-outlined">share</span>
+                        SHARE
+                    </button>
+                    <button type="button" class="btn btn-danger action-btn" (click)="cancelAppointment()">
+                        <span class="material-symbols-outlined">delete</span>
+                        DELETE
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Reschedule Modal -->
+<div class="luxury-form-overlay resched-overlay" *ngIf="showRescheduleModal">
+    <div class="luxury-form-card reschedule-modal">
+        <button class="modal-close-btn" (click)="closeRescheduleModal()">&#10005;</button>
+        <h3>RESCHEDULE APPOINTMENT</h3>
+        <div class="reschedule-content">
+            <div class="form-group">
+                <label>NEW DATE</label>
+                <input type="date" [(ngModel)]="rescheduleDate" (change)="onRescheduleDateChange()" [min]="minDate">
+            </div>
+            <div class="form-group">
+                <label>AVAILABLE TIME SLOTS</label>
+                <div class="time-slots-grid">
+                    <button type="button" *ngFor="let slot of allTimeSlots"
+                        class="time-slot-btn"
+                        [class.available]="availableTimeSlots.includes(slot)"
+                        [class.unavailable]="!availableTimeSlots.includes(slot)"
+                        [class.selected]="rescheduleTime === slot && availableTimeSlots.includes(slot)"
+                        [disabled]="!availableTimeSlots.includes(slot) || isRescheduling"
+                        (click)="selectTimeSlot(slot)">
+                        {{slot}}
+                        <span class="slot-indicator" *ngIf="!availableTimeSlots.includes(slot)">BOOKED</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="actions" style="margin-top: 2.5rem;">
+            <button type="button" class="btn btn-primary" 
+                [disabled]="!rescheduleDate || !rescheduleTime || isRescheduling"
+                (click)="confirmReschedule()">
+                {{isRescheduling ? 'UPDATING...' : 'CONFIRM RESCHEDULE'}}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="closeRescheduleModal()">
+                CANCEL
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Share Modal -->
+<div class="luxury-form-overlay" *ngIf="showShareModal">
+    <div class="luxury-form-card share-modal">
+        <h3>SHARE APPOINTMENT</h3>
+        <div class="share-preview">
+            <pre>{{shareMessage}}</pre>
+        </div>
+        <div class="share-options">
+            <button type="button" class="share-option-btn pdf" (click)="sharePdf()">
+                <span class="material-symbols-outlined">share</span>
+                <span class="share-label">Share PDF</span>
+            </button>
+            <button type="button" class="share-option-btn download" (click)="downloadPdf()">
+                <span class="material-symbols-outlined">download</span>
+                <span class="share-label">Download PDF</span>
+            </button>
+            <button type="button" class="share-option-btn" (click)="copyToClipboard()">
+                <span class="material-symbols-outlined">content_copy</span>
+                <span class="share-label">Copy Text</span>
+            </button>
+        </div>
+        <div class="actions">
+            <button type="button" class="btn btn-secondary" (click)="closeShareModal()">CLOSE</button>
+        </div>
+    </div>
+</div>

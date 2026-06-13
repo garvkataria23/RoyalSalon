@@ -1,0 +1,114 @@
+<div class="page-container fade-in">
+  <div class="page-header">
+    <h2>Specialist Atelier</h2>
+    <button class="btn btn-primary" (click)="openNew()">
+      <span class="material-symbols-outlined">badge</span>
+      ENROLL NEW SPECIALIST
+    </button>
+  </div>
+
+  <div class="luxury-form-overlay" *ngIf="showForm">
+    <div class="luxury-form-card">
+      <h3>{{editMode ? 'REFINE' : 'NEW'}} SPECIALIST PROFILE</h3>
+      <form (ngSubmit)="save()">
+        <div class="grid-form">
+          <div class="form-group">
+            <label>NAME <span style="color:var(--danger)">*</span></label>
+            <input type="text" [(ngModel)]="current.name" name="name" required placeholder="e.g. Priya Sharma">
+          </div>
+          <div class="form-group">
+            <label>SPECIALIZATION <span style="color:var(--danger)">*</span></label>
+            <input type="text" [(ngModel)]="current.specialization" name="specialization" required placeholder="e.g. Hair Stylist">
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">SAVE PROFILE</button>
+          <button type="button" class="btn btn-secondary" (click)="showForm=false">DISCARD</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="material-symbols-outlined filter-icon">search</span>
+    <input type="text" class="filter-input" [(ngModel)]="filterText" placeholder="Search by name or specialization...">
+    <select class="filter-select" [(ngModel)]="specFilter">
+      <option value="">All Specializations</option>
+      <option *ngFor="let spec of uniqueSpecs" [value]="spec">{{spec}}</option>
+    </select>
+  </div>
+
+  <div class="table-container" *ngIf="staffList.length">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>SPECIALIST</th>
+          <th>MASTERY</th>
+          <th style="text-align: right;">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of filteredList">
+          <td>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+               <div style="width: 40px; height: 40px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; color: var(--gold);">
+                 {{s.name.charAt(0)}}
+               </div>
+               <span style="font-family: var(--font-heading); font-weight: 700; cursor: pointer;" (click)="viewSchedule(s)">{{s.name}}</span>
+            </div>
+          </td>
+          <td><span class="mastery-tag">{{s.specialization}}</span></td>
+          <td style="text-align: right;">
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+              <button class="btn btn-secondary" style="padding: 0.5rem;" (click)="openEdit(s)" title="Refine">
+                <span class="material-symbols-outlined">edit_note</span>
+              </button>
+              <button class="btn btn-danger" style="padding: 0.5rem;" (click)="delete(s._id)" title="Remove">
+                <span class="material-symbols-outlined">delete_forever</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div *ngIf="!staffList.length && !showForm" class="empty-state">
+    <span class="material-symbols-outlined">person_off</span>
+    <p>NO SPECIALISTS ENROLLED</p>
+  </div>
+</div>
+
+<div class="luxury-form-overlay" *ngIf="showScheduleModal" (click)="closeModalOnOverlay($event)">
+  <div class="luxury-form-card" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
+    <h3>WEEKLY SCHEDULE — {{selectedStaff?.name}}</h3>
+    <table class="table" style="margin-top: 1.5rem;" *ngIf="staffSchedule.length">
+      <thead>
+        <tr>
+          <th>DATE</th>
+          <th>DAY</th>
+          <th>TIME</th>
+          <th>CLIENT</th>
+          <th>SERVICE</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of staffSchedule">
+          <td>{{a.date | date:'mediumDate'}}</td>
+          <td>{{getDayName(a.date)}}</td>
+          <td>{{a.timeSlot}}</td>
+          <td style="font-family: var(--font-heading); font-weight: 700;">{{a.clientName}}</td>
+          <td><span class="mastery-tag">{{a.service}}</span></td>
+          <td><span class="status-badge-sm" [class]="getStatusClass(a.status)">{{a.status || 'Booked'}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!staffSchedule.length" style="text-align: center; padding: 2rem; color: #999;">
+      No appointments this week
+    </div>
+    <div class="actions" style="margin-top: 1.5rem;">
+      <button type="button" class="btn btn-secondary" (click)="closeScheduleModal()">CLOSE</button>
+    </div>
+  </div>
+</div>

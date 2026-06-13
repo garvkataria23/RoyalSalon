@@ -1,0 +1,7 @@
+.page-container {
+    overflow: hidden;
+}
+
+.luxury-form-card::after {
+    display: none;
+}

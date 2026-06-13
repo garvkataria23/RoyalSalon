@@ -1,0 +1,39 @@
+<div class="luxury-login">
+    <div class="overlay"></div>
+    <div class="login-card fade-in">
+        <div class="card-inner">
+            <span class="material-symbols-outlined gold-icon">spa</span>
+            <h2>Royal Salon CRM</h2>
+            <p class="subtitle">ADMIN ACCESS ONLY</p>
+            
+            <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                <div class="form-group">
+                    <input type="text" [(ngModel)]="credentials.userId" name="userId" required placeholder="USERNAME" (input)="clearError()" #userIdField="ngModel">
+                    <span class="field-error" *ngIf="userIdField.invalid && userIdField.touched">Username is required</span>
+                </div>
+
+                <div class="form-group password-group">
+                    <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="credentials.password" name="password" required placeholder="PASSWORD" (input)="clearError()" #passwordField="ngModel">
+                    <button type="button" class="password-toggle" (click)="togglePassword()" tabindex="-1">
+                        <span class="material-symbols-outlined">{{showPassword ? 'visibility_off' : 'visibility'}}</span>
+                    </button>
+                    <span class="field-error" *ngIf="passwordField.invalid && passwordField.touched">Password is required</span>
+                </div>
+
+                <label class="remember-label">
+                    <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" class="remember-checkbox">
+                    <span class="remember-text">Remember Me</span>
+                </label>
+
+                <button type="submit" class="btn btn-primary login-btn" [disabled]="isLoading">
+                    {{isLoading ? 'PLEASE WAIT...' : 'ENTER SYSTEM'}}
+                </button>
+            </form>
+
+            <p class="error" *ngIf="error">{{error}}</p>
+
+            <p class="demo-hint">ADMIN LOGIN — admin / aurashineinfotech</p>
+            <p class="demo-hint" style="margin-top: 0.25rem; font-size: 0.6rem;">Change password in Settings</p>
+        </div>
+    </div>
+</div>
