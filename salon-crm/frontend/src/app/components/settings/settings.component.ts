@@ -12,7 +12,6 @@ import { ToastService } from '../../services/toast.service';
 })
 export class SettingsComponent implements OnInit {
   salonName = 'Royal Salon';
-  currency = 'INR';
   taxRate = 18;
 
   oldPassword = '';
@@ -29,13 +28,12 @@ export class SettingsComponent implements OnInit {
     if (saved) {
       const data = JSON.parse(saved);
       this.salonName = data.salonName;
-      this.currency = data.currency;
       this.taxRate = data.taxRate;
     }
   }
 
   save() {
-    const settings = { salonName: this.salonName, currency: this.currency, taxRate: this.taxRate };
+    const settings = { salonName: this.salonName, currency: 'INR', taxRate: this.taxRate };
     localStorage.setItem('settings', JSON.stringify(settings));
     this.toastService.show('CONFIGURATION APPLIED', 'success');
   }
